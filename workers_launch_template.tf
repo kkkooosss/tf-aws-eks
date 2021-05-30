@@ -214,11 +214,11 @@ resource "aws_autoscaling_group" "workers_launch_template" {
       [
         {
           "key" = "Name"
-          "value" = "${coalescelist(aws_eks_cluster.this[*].name, [""])[0]}-${lookup(
+          "value" = "lt-asg-eks-${coalescelist(aws_eks_cluster.this[*].name, [""])[0]}-${lookup(
             var.worker_groups_launch_template[count.index],
             "name",
             count.index,
-          )}-eks_asg"
+          )}"
           "propagate_at_launch" = true
         },
         {
@@ -523,11 +523,11 @@ resource "aws_launch_template" "workers_launch_template" {
 
     tags = merge(
       {
-        "Name" = "${coalescelist(aws_eks_cluster.this[*].name, [""])[0]}-${lookup(
+        "Name" = "asg-eks-${coalescelist(aws_eks_cluster.this[*].name, [""])[0]}-${lookup(
           var.worker_groups_launch_template[count.index],
           "name",
           count.index,
-        )}-eks_asg"
+        )}"
       },
       var.tags,
     )
@@ -538,11 +538,11 @@ resource "aws_launch_template" "workers_launch_template" {
 
     tags = merge(
       {
-        "Name" = "${coalescelist(aws_eks_cluster.this[*].name, [""])[0]}-${lookup(
+        "Name" = "i-asg-eks-${coalescelist(aws_eks_cluster.this[*].name, [""])[0]}-${lookup(
           var.worker_groups_launch_template[count.index],
           "name",
           count.index,
-        )}-eks_asg"
+        )}"
       },
       { for tag_key, tag_value in var.tags :
         tag_key => tag_value
